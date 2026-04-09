@@ -1,42 +1,86 @@
-# ZUERA MUSIC
+# Prime Music
 
-Aplicativo PWA de streaming musical inspirado em experiências modernas de música, construído com Next.js App Router + Audius API.
+Prime Music is a production-ready Spotify-inspired music streaming web app.
 
 ## Stack
-- Next.js 15 + React 18 + TypeScript
-- Tailwind CSS
-- Zustand para player global
-- PWA (manifest + service worker)
-- Pronto para deploy na Vercel
 
-## Rodando localmente
+- **Frontend:** React + Vite + TypeScript + TailwindCSS + PWA
+- **Backend:** FastAPI + yt-dlp
+
+## Project structure
+
+```txt
+.
+├── frontend
+│   ├── index.html
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   ├── vite.config.ts
+│   ├── vercel.json
+│   ├── eslint.config.js
+│   └── src
+│       ├── App.tsx
+│       ├── main.tsx
+│       ├── styles.css
+│       ├── types/music.ts
+│       ├── lib/api.ts
+│       ├── lib/time.ts
+│       ├── hooks/useDebounce.ts
+│       ├── context/PlayerContext.tsx
+│       └── components
+│           ├── Sidebar.tsx
+│           ├── SearchBar.tsx
+│           ├── TrackCard.tsx
+│           ├── TrackGrid.tsx
+│           └── PlayerBar.tsx
+└── backend
+    ├── main.py
+    ├── requirements.txt
+    ├── .env.example
+    └── render.yaml
+```
+
+## Run locally
+
+### Backend
+
 ```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
 npm install
 npm run dev
 ```
-Abra `http://localhost:3000`.
 
-## Scripts
+## Environment variables
+
+### Backend (`backend/.env`)
+
 ```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
+CORS_ORIGINS=http://localhost:5173,https://your-frontend-domain.vercel.app
 ```
 
-## Deploy na Vercel
-1. Faça push do projeto para GitHub.
-2. Na Vercel, clique em **Add New Project**.
-3. Importe o repositório `zuera-music`.
-4. Build command: `npm run build` (default).
-5. Output: `.next` (default).
-6. Deploy.
+### Frontend (`frontend/.env`)
 
-## Funcionalidades
-- Home com músicas Trending via Audius API.
-- Busca por faixas.
-- Player global com play/pause, próxima/anterior, barra de progresso e volume.
-- Favoritos em `localStorage`.
-- Biblioteca com favoritos + recentes.
-- PWA instalável com cache offline básico.
+```bash
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+## API endpoints
+
+- `GET /api/search?q=<query>&limit=20`
+- `GET /api/stream?id=<youtube_video_id>`
+- `GET /health`
 
