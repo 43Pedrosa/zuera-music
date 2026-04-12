@@ -1,24 +1,23 @@
 {
-  "name": "ZUERA MUSIC",
-  "short_name": "ZUERA",
-  "description": "App PWA de streaming musical com experiência premium.",
+  "name": "GymFlow Premium",
+  "short_name": "GymFlow",
+  "description": "Acompanhamento premium de evolução física, check-in diário e desempenho na academia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#070808",
-  "theme_color": "#070808",
-  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
   "icons": [
     {
       "src": "/icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

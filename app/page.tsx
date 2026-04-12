@@ -1,49 +1,55 @@
-import { getTrendingTracks } from '@/services/audius';
-import { TrackCard } from '@/components/TrackCard';
-import { SkeletonCard } from '@/components/SkeletonCard';
-import { Suspense } from 'react';
+'use client';
 
-async function TrendingSection() {
-  try {
-    const tracks = await getTrendingTracks(24);
+import Link from 'next/link';
+import { BottomNav } from '@/components/BottomNav';
+import { LoginGate } from '@/components/LoginGate';
+import { SimpleLineChart } from '@/components/SimpleLineChart';
+import { feedbackMessage, leanMass, scoreLabel, sevenDayVariation, streakCount, dayScore } from '@/lib/calculations';
+import { useFitnessStore } from '@/store/useFitnessStore';
 
-    return (
-      <section>
-        <h2 className="mb-4 text-2xl font-bold">Trending agora</h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
-          {tracks.map((track) => (
-            <TrackCard key={track.id} track={track} queue={tracks} />
-          ))}
-        </div>
-      </section>
-    );
-  } catch {
-    return <p className="rounded-xl bg-red-500/20 p-4 text-red-200">Erro ao carregar faixas em alta.</p>;
-  }
-}
+export default function DashboardPage() {
+  const user = useFitnessStore((s) => s.user);
+  const checkins = useFitnessStore((s) => s.checkins).sort((a, b) => a.data.localeCompare(b.data));
 
-function LoadingGrid() {
+  const latest = checkins.at(-1);
+  const pesoAtual = latest?.peso ?? 0;
+  const gordura = latest?.gordura ?? 0;
+  const massaMagra = latest ? leanMass(latest.peso, latest.gordura) : 0;
+  const score = latest ? dayScore(latest) : 0;
+
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
-      {Array.from({ length: 10 }).map((_, i) => (
-        <SkeletonCard key={i} />
-      ))}
-    </div>
-  );
-}
+    <LoginGate>
+      <div className="space-y-4 pb-5">
+        <header className="space-y-1">
+          <p className="text-sm text-slate-500">Fala, {user?.nome} 👋</p>
+          <h1 className="text-2xl font-bold">Dashboard de evolução</h1>
+        </header>
 
-export default function HomePage() {
-  return (
-    <div className="space-y-8">
-      <header className="glass rounded-2xl p-6">
-        <p className="text-sm uppercase tracking-widest text-neon">Novo no ar</p>
-        <h1 className="mt-2 text-4xl font-black">Sinta o som. Viva a batida.</h1>
-        <p className="mt-3 max-w-xl text-muted">Experiência premium de streaming com playlists em alta e reprodução contínua.</p>
-      </header>
+        <section className="grid grid-cols-2 gap-3">
+          <article className="card"><p className="text-xs text-slate-500">Peso atual</p><p className="text-xl font-bold">{pesoAtual.toFixed(1)} kg</p></article>
+          <article className="card"><p className="text-xs text-slate-500">Variação 7 dias</p><p className="text-xl font-bold">{sevenDayVariation(checkins)} kg</p></article>
+          <article className="card"><p className="text-xs text-slate-500">% gordura</p><p className="text-xl font-bold">{gordura.toFixed(1)}%</p></article>
+          <article className="card"><p className="text-xs text-slate-500">Massa magra</p><p className="text-xl font-bold">{massaMagra.toFixed(1)} kg</p></article>
+        </section>
 
-      <Suspense fallback={<LoadingGrid />}>
-        <TrendingSection />
-      </Suspense>
-    </div>
+        <section className="card space-y-2">
+          <p className="text-sm text-slate-500">Score do dia</p>
+          <p className="text-3xl font-bold">{score} · {scoreLabel(score)}</p>
+          <p className="text-sm text-slate-500">🔥 Streak: {streakCount(checkins)} dias</p>
+          <p className="rounded-xl bg-slate-50 p-3 text-sm">{feedbackMessage(checkins)}</p>
+        </section>
+
+        <section className="card space-y-2">
+          <p className="text-sm font-semibold">Gráfico de peso</p>
+          <SimpleLineChart
+            values={checkins.map((c) => c.peso)}
+            labels={checkins.map((c) => c.data.slice(5))}
+          />
+        </section>
+
+        <Link href="/checkin" className="btn-primary block text-center">Registrar hoje</Link>
+      </div>
+      <BottomNav />
+    </LoginGate>
   );
 }
