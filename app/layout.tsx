@@ -1,20 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Sidebar } from '@/components/Sidebar';
 import { PWARegister } from '@/components/PWARegister';
-import { GlobalAudioPlayer } from '@/components/GlobalAudioPlayer';
 
 export const metadata: Metadata = {
-  title: 'ZUERA MUSIC',
-  description: 'Streaming de música moderno com experiência premium.',
-  applicationName: 'ZUERA MUSIC',
-  keywords: ['music', 'streaming', 'pwa', 'audius', 'zuera music'],
+  title: 'GymFlow Premium',
+  description: 'PWA premium para evolução física e desempenho na academia.',
   manifest: '/manifest.json',
-  themeColor: '#070808',
-  openGraph: {
-    title: 'ZUERA MUSIC',
-    description: 'Descubra músicas em alta e escute em qualquer lugar.'
-  }
+  applicationName: 'GymFlow Premium'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -22,9 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <body>
         <PWARegister />
-        <Sidebar />
-        <main className="px-4 pb-24 pt-4 lg:ml-72 lg:px-8 lg:pb-8">{children}</main>
-        <GlobalAudioPlayer />
+        <main className="mx-auto min-h-screen w-full max-w-md bg-white px-4 pb-24 pt-4 text-slate-900">{children}</main>
       </body>
     </html>
   );

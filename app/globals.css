@@ -3,22 +3,25 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  @apply bg-bg text-white antialiased;
+  @apply bg-slate-100 antialiased;
 }
 
-.glass {
-  @apply bg-panel/80 backdrop-blur-md border border-white/10;
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white p-4 shadow-sm;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
+.input {
+  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-slate-400;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #21f07d66;
-  border-radius: 999px;
+.btn-primary {
+  @apply w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700;
+}
+
+.btn-secondary {
+  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50;
 }
