@@ -4,12 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        surface: '#121212',
-        panel: '#191919',
-        cyan: '#22d3ee'
-      },
-      boxShadow: {
-        glow: '0 0 30px rgba(34, 211, 238, 0.25)'
+        luxuryBlack: '#0A0A0A',
+        ivory: '#F2EEE8',
+        softGray: '#D6D6D6'
       }
     }
   },
